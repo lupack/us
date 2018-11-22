@@ -14,3 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//后台
+
+Route::group([], function(){
+
+    //后台的首页
+    Route::get('/admin', 'Admin\IndexController@index');
+});
+
+    /*//后台的用户管理
+    Route::resource('admin/user',"Admin\UserController");
+    Route::get('/admin/usajax','Admin\UserController@ajaxupdate');*/
