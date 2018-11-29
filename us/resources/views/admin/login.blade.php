@@ -1,88 +1,118 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js">
-<!--<![endif]-->
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
-    <meta name="author" content="order by dede58.com"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SpaceLab</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
-    <!-- Fonts from Font Awsome -->
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-    <!-- CSS Animate -->
-    <link rel="stylesheet" href="assets/css/animate.css">
-    <!-- Custom styles for this theme -->
-    <link rel="stylesheet" href="assets/css/main.css">
-    <!-- Fonts -->
-    <!-- <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'> -->
-    <!-- Feature detection -->
-    <script src="assets/js/modernizr-2.6.2.min.js"></script>
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="assets/js/html5shiv.js"></script>
-    <script src="assets/js/respond.min.js"></script>
-    <![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>系统登录</title>
+
+<style type="text/css">
+html{overflow-y:scroll;vertical-align:baseline;}
+body{font-family:Microsoft YaHei,Segoe UI,Tahoma,Arial,Verdana,sans-serif;font-size:12px;color:#fff;height:100%;line-height:1;background:#999}
+*{margin:0;padding:0}
+ul,li{list-style:none}
+h1{font-size:30px;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.2)}
+.login-box{width:410px;margin:120px auto 0 auto;text-align:center;padding:30px;background:url(images/mask.png);border-radius:10px;}
+.login-box .name,.login-box .password,.login-box .code,.login-box .remember{font-size:16px;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.login-box .remember input{box-shadow:none;width:15px;height:15px;margin-top:25px}
+.login-box .remember{padding-left:40px}
+.login-box .remember label{display:inline-block;height:42px;width:70px;line-height:34px;text-align:left}
+.login-box label{display:inline-block;width:100px;text-align:right;vertical-align:middle}
+.login-box #code{width:120px}
+.login-box .codeImg{float:right;margin-top:26px;}
+.login-box img{width:148px;height:42px;border:none}
+input[type=text],input[type=password]{width:270px;height:42px;margin-top:25px;padding:0px 15px;border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;letter-spacing:2px;font-size:16px;background:transparent;}
+button{cursor:pointer;width:100%;height:44px;padding:0;background:#ef4300;border:1px solid #ff730e;border-radius:6px;font-weight:700;color:#fff;font-size:24px;letter-spacing:15px;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+input:focus{outline:none;box-shadow:0 2px 3px 0 rgba(0,0,0,.1) inset,0 2px 7px 0 rgba(0,0,0,.2)}
+button:hover{box-shadow:0 15px 30px 0 rgba(255,255,255,.15) inset,0 2px 7px 0 rgba(0,0,0,.2)}
+.screenbg{position:fixed;bottom:0;left:0;z-index:-999;overflow:hidden;width:100%;height:100%;min-height:100%;}
+.screenbg ul li{display:block;list-style:none;position:fixed;overflow:hidden;top:0;left:0;width:100%;height:100%;z-index:-1000;float:right;}
+.screenbg ul a{left:0;top:0;width:100%;height:100%;display:inline-block;margin:0;padding:0;cursor:default;}
+.screenbg a img{vertical-align:middle;display:inline;border:none;display:block;list-style:none;position:fixed;overflow:hidden;top:0;left:0;width:100%;height:100%;z-index:-1000;float:right;}
+.bottom{margin:8px auto 0 auto;width:100%;position:fixed;text-align:center;bottom:0;left:0;overflow:hidden;padding-bottom:8px;color:#ccc;word-spacing:3px;zoom:1;}
+.bottom a{color:#FFF;text-decoration:none;}
+.bottom a:hover{text-decoration:underline;}
+.error{background-color:red;width:300px;height:30px;margin-left:85px;padding-top: 10px;}
+
+</style>
+
+<script type="text/javascript" src="/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    $(".screenbg ul li").each(function(){
+        $(this).css("opacity","0");
+    });
+    $(".screenbg ul li:first").css("opacity","1");
+    var index = 0;
+    var t;
+    var li = $(".screenbg ul li");
+    var number = li.size();
+    function change(index){
+        li.css("visibility","visible");
+        li.eq(index).siblings().animate({opacity:0},3000);
+        li.eq(index).animate({opacity:1},3000);
+    }
+    function show(){
+        index = index + 1;
+        if(index<=number-1){
+            change(index);
+        }else{
+            index = 0;
+            change(index);
+        }
+    }
+    t = setInterval(show,8000);
+    //根据窗口宽度生成图片宽度
+    var width = $(window).width();
+    $(".screenbg ul img").css("width",width+"px");
+});
+</script>
+
 </head>
 
 <body>
-    <section id="login-container">
 
-        <div class="row">
-            <div class="col-md-3" id="login-wrapper">
-                <div class="panel panel-primary animated flipInY">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Sign In
-                        </h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>Login to access your account.</p>
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <input type="email" class="form-control" id="email" placeholder="Email">
-                                    <i class="fa fa-user"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <input type="password" class="form-control" id="password" placeholder="Password">
-                                    <i class="fa fa-lock"></i>
-                                    <a href="javascript:void(0)" class="help-block">Forgot Your Password?</a>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <a href="index.html" class="btn btn-primary btn-block">Sign in</a>
-                                    <hr />
-                                    <a href="pages-sign-up.html" class="btn btn-default btn-block">Not a member? Sign Up</a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+<div class="login-box">
+ @if(session('error'))
+            <div class="error">
+                <li>{{session('error')}}</li>
+            </div>
+        @endif
+    <h1>星梦购物系统后台登录</h1>
+    <form method="post" action="/admin/dologin">
+        <div class="name">
+            <label>管理员账号：</label>
+            <input type="text" name="username" id="" tabindex="1" autocomplete="off" />
+        </div>
+        <div class="password">
+            <label>密  码：</label>
+            <input type="password" name="password" maxlength="16" id="" tabindex="2"/>
+        </div>
+        <div class="code">
+            <label>验证码：</label>
+            <input type="text" name="code" maxlength="4" id="code" tabindex="3"/>
+            <div class="codeImg">
+                <img src="/admin/captcha" onclick='this.src = this.src+="?1"'/>
             </div>
         </div>
+        <div class="remember">
+            <input type="checkbox" id="remember" tabindex="4">
+            <label>记住密码</label>
+        </div>
+        <div class="login">
+            {{csrf_field()}}
+            <button type="submit" tabindex="5">登录</button>
+        </div>
+    </form>
+</div>
 
-    </section>
-    <!--Global JS-->
-    <script src="assets/js/jquery-1.10.2.min.js"></script>
-    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/plugins/waypoints/waypoints.min.js"></script>
-    <script src="assets/plugins/nanoScroller/jquery.nanoscroller.min.js"></script>
-    <script src="assets/js/application.js"></script>
+<div class="bottom">©2014 Leting <a href="javascript:;" target="_blank">关于</a> <span>京ICP证030173号</span><img width="13" height="16" src="/image/images/copy_rignt_24.png" /></div>
+
+<div class="screenbg">
+    <ul>
+        <li><a href="javascript:;"><img src="/image/images/0.png"></a></li>
+        <li><a href="javascript:;"><img src="/image/images/1.png"></a></li>
+        <li><a href="javascript:;"><img src="/image/images/2.png"></a></li>
+    </ul>
+</div>
 
 </body>
-
 </html>

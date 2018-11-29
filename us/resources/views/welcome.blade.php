@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Laravel 全新升级5.5
                 </div>
 
                 <div class="links">
