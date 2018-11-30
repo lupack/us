@@ -216,12 +216,12 @@ class GoodsController extends Controller
         ]);
         //表单验证
 
-        $rs = Goodsimg::where('gid',$id)->get();
+        /*$rs = Goodsimg::where('gid',$id)->get();
 
         foreach($rs as $v){
 
             unlink('.'.$v->gimg);
-        }
+        }*/
 
         $res = $request->except('_token','_method','gimg');
 
@@ -251,16 +251,15 @@ class GoodsController extends Controller
                 $ar['gimg'] = '/uploads/'.$name.'.'.$suffix;
 
                 $arr[] = $ar;
+
+                /*$sd = []
+                $sd = ['gid'=>$id,'gimg'=>'/uploads/'.$name.'.'.$suffix];
+                array_push($arr,$sd);*/
             }
+            $rs = Goodsimg::where('gid',$id)->insert($arr);
         }
 
-        $rs = Goodsimg::where('gid',$id)->insert($arr);
-
-
-        if($rs){
-
-            return redirect('/admin/goods')->with('success','修改成功');
-        }
+        return redirect('/admin/goods')->with('info','修改成功');
 
     }
 

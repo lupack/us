@@ -127,6 +127,13 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="javascript:;"><i class="icon-list"></i>商品类型</a>
+                    <ul>
+                        <li><a href="/admin/goodstype/create">类型添加</a></li>
+                        <li><a href="/admin/goodstype">类型管理</a></li>
+                    </ul>
+                </li>
+                <li>
                     <a href="#"><i class="icon-list"></i> 分类管理</a>
                     <ul>
                         <li><a href="/admin/cate/create">增加分类</a></li>
@@ -159,13 +166,6 @@
                     <ul>
                         <li><a href="/admin/goodsattr/create">属性添加</a></li>
                         <li><a href="/admin/goodsattr">属性管理</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:;"><i class="icon-list"></i>商品类型</a>
-                    <ul>
-                        <li><a href="/admin/goodstype/create">类型添加</a></li>
-                        <li><a href="/admin/goodstype">类型管理</a></li>
                     </ul>
                 </li>
                 <li>
