@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Admin\Goods;
-use App\Model\Admin\Goods_photos;
+use App\Model\Admin\Goodsimg;
 
 class PhotosController extends Controller
 {
@@ -19,7 +19,7 @@ class PhotosController extends Controller
         //
 
         $goods = Goods::all();
-        $photos = Goods_photos::all();
+        $photos = Goodsimg::all();
         return view('admin.photos.index',['title'=>'图片管理','goods'=>$goods,'photos'=>$photos]);
     }
 
@@ -64,6 +64,10 @@ class PhotosController extends Controller
     public function edit($id)
     {
         //
+        $res = Goodsimg::where('gid',$id)->first();
+        dd($res);
+        $goods = Goods::all();
+        return view('admin.photos.edit',['title'=>'图片修改界面','goods'=>$goods,'res'=>$res]);
     }
 
     /**

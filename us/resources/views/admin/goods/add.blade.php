@@ -1,5 +1,4 @@
-@extends('layout.admin')
-
+@extends('admin.index')
 @section('title',$title)
 
 <script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.config.js"></script>
@@ -9,26 +8,13 @@
 <script type="text/javascript" charset="utf-8" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
 
 @section('content')
-<div class="mws-panel grid_8">
+    <div class="mws-panel grid_8">
     <div class="mws-panel-header">
         <span>{{$title}}</span>
     </div>
     <div class="mws-panel-body no-padding">
-
-        @if (count($errors) > 0)
-        <div class="mws-form-message error">
-            显示错误信息
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li style='font-size:14px'>{{$error}}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
-
-        <form action="/admin/goods" method="post" class="mws-form" enctype='multipart/form-data'>
+        <form class="mws-form" action="/admin/goods" method="post" enctype="multipart/form-data">
             <div class="mws-form-inline">
-
                 <div class="mws-form-row">
                     <label class="mws-form-label">分类名</label>
                     <div class="mws-form-item">
@@ -121,16 +107,12 @@
             </div>
             <div class="mws-button-row">
                 {{csrf_field()}}
-
-                <input type="submit" class="btn btn-primary" value="添加">
-                
+                <input type="submit" value="添加" class="btn btn-warning">
             </div>
         </form>
-    </div>      
-</div>
-
-
-@stop
+    </div>
+    </div>
+@endsection
 
 @section('myJs')
 <script>

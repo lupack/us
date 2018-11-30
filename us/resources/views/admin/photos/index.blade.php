@@ -1,4 +1,4 @@
-@extends('layout.admin')
+@extends('admin.index')
 
 @section('title',$title)
 
@@ -15,6 +15,7 @@
                         <th>ID</th>
                         <th>商品</th>
                         <th>商品图片</th>
+                        <th>操作</th>
                         
                     </tr>
                     @foreach ($photos as $k=>$v)
@@ -27,6 +28,17 @@
                             @endif
                         @endforeach
                         <th><img src="{{$v->gimg}}" alt=""></th>
+                        <th>
+                            <span class="btn-group">
+                                <a href="/admin/photos/{{$v['id']}}/edit" class="btn btn-small"><i class="icon-pencil"></i></a>
+
+                            <form action="/admin/photos/{{$v->id}}" method='post' style='display:inline'>
+                                {{csrf_field()}}
+                                {{method_field("DELETE")}}
+                                <button class='btn btn-small'><i class="icon-trash"></i></button>
+                            </form>
+                            </span>
+                        </th>
                     </tr>
                     @endforeach
             </table>

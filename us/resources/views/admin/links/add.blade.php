@@ -30,7 +30,7 @@
                    <div class="mws-form-row" style="width: 490px;" >
                         <label class="mws-form-label">网站描述</label>
                         <div class="mws-form-item">
-                            <textarea rows="3" cols="20" name="desc"  style="width: 410px;" placeholder="请输入网站描述"></textarea>                            </textarea>
+                            <textarea rows="3" cols="20" name="desc"  style="width: 410px;" placeholder="请输入网站描述"></textarea>
                         </div>
                     </div>
                 <div class="mws-form-row">

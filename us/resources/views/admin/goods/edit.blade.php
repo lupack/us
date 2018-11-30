@@ -26,7 +26,7 @@
         </div>
         @endif
 
-        <form action="/admin/fri/{{$res->id}}" method="post" class="mws-form" enctype='multipart/form-data'>
+        <form action="/admin/goods/{{$res->id}}" method="post" class="mws-form" enctype='multipart/form-data'>
             <div class="mws-form-inline">
 
                 <div class="mws-form-row">
@@ -37,8 +37,7 @@
                             @foreach($rs as $v)
 
                              @if($res->gcate == $v->id)
-                                <option value='{{$v->id}}'  selected  >{{$v->cate_name}}</option>
-                                @else
+                                <option value='{{$v->id}}'  selected  >{{$v->cate_name}}</option                                 @else
                                 <option value='{{$v->id}}' >{{$v->cate_name}}</option>
                                 @endif
                             @endforeach

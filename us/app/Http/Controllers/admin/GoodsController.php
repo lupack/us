@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Admin\Goods;
-use App\Model\Admin\category;
+use App\Model\Admin\Category;
 use App\Model\Admin\Goodstype;
 use App\Model\Admin\Goodsbrand;
-use App\Model\Admin\Goodsphoto;
+use App\Model\Admin\Goodsimg;
 use DB;
 
 class GoodsController extends Controller
@@ -49,7 +49,7 @@ class GoodsController extends Controller
     public function create()
     {
         //
-        $rs = category::select(DB::raw('*,CONCAT(path,id) as path'))->
+        $rs = Category::select(DB::raw('*,CONCAT(path,id) as path'))->
         orderBy('path')->
         get();
 
@@ -82,6 +82,16 @@ class GoodsController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'gname' => 'required',
+            'price' => 'required',
+            'content'=>'required',
+        ],[
+            'gname.required' => '商品名不为空',
+            'price.required' => '商品价格不为空',
+            'content.required'=>'详情不为空',
+        ]);
+
         $res = $request->except('_token','gimg');
         $rs = Goods::create($res);
         $id = $rs->id;
@@ -137,7 +147,15 @@ class GoodsController extends Controller
     public function show($id)
     {
         //
-        
+        $res = Goodsimg::destroy($id);
+
+        if($res){
+
+            echo 1;
+        } else {
+
+            echo 0;
+        }
     }
 
     /**
@@ -149,7 +167,7 @@ class GoodsController extends Controller
     public function edit($id)
     {
         //
-        $rs = category::select(DB::raw('*,CONCAT(path,id) as path'))->
+        $rs = Category::select(DB::raw('*,CONCAT(path,id) as path'))->
         orderBy('path')->
         get();
 
@@ -165,8 +183,7 @@ class GoodsController extends Controller
         $types = Goodstype::all();
         $brands = Goodsbrand::all();
 
-
-        $gimgs = Goods_photos::where('gid',$id)->get();
+        $gimgs = Goodsimg::where('gid',$id)->get();
 
         return view('admin.goods.edit',[
             'title'=>'商品的修改页面',
@@ -188,13 +205,22 @@ class GoodsController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request, [
+            'gname' => 'required',
+            'price' => 'required',
+            'content'=>'required',
+        ],[
+            'gname.required' => '商品名不为空',
+            'price.required' => '商品价格不为空',
+            'content.required'=>'详情不为空',
+        ]);
         //表单验证
 
-        $rs = Goods_photos::where('gid',$id)->get();
+        $rs = Goodsimg::where('gid',$id)->get();
 
         foreach($rs as $v){
 
-            unlink('.'.$v->gimg);
+            unlink($v->gimg);
         }
 
         $res = $request->except('_token','_method','gimg');
@@ -228,7 +254,7 @@ class GoodsController extends Controller
             }
         }
 
-        $rs = Goods_photos::where('gid',$id)->insert($arr);
+        $rs = Goodsimg::where('gid',$id)->insert($arr);
 
 
         if($rs){

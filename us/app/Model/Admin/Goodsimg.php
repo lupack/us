@@ -13,7 +13,7 @@ class Goodsimg extends Model
      *
      * @var string
      */
-    protected $table = 'goodsimg';
+    protected $table = 'goods_photo';
 
     protected $primaryKey = 'id';
 
@@ -30,4 +30,9 @@ class Goodsimg extends Model
 	 * @var array
 	 */
 	protected $guarded = [];
+    
+    public function goods(){
+
+        return $this->belongsTo('App\Model\Admin\Goods');
+    }
 }
