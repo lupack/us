@@ -220,7 +220,7 @@ class GoodsController extends Controller
 
         foreach($rs as $v){
 
-            unlink($v->gimg);
+            unlink('.'.$v->gimg);
         }
 
         $res = $request->except('_token','_method','gimg');

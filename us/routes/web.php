@@ -75,6 +75,8 @@ Route::group(['middleware'=>'login'], function(){
     //商品管理
     Route::resource('admin/goods','Admin\GoodsController');
     Route::resource('admin/photos','Admin\PhotosController');
+    Route::any('/admin/uploadphotos','Admin\PhotosController@upload');
+
 });
 
 //用户权限提示页面

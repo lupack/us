@@ -124,7 +124,6 @@ class LoginController extends Controller
         //dd($file);
         if(!$file){
 
-
            return back()->with('error','上传错误');
         }
         //判断文件是否有效
@@ -143,7 +142,7 @@ class LoginController extends Controller
             //返回文件的路径
             return  $filepath;
 
-}
+        }
 
     }
 
