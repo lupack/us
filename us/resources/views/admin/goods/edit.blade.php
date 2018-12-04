@@ -118,11 +118,44 @@
                     <label class="mws-form-label">商品图片</label>
                     <div class="mws-form-item">
                         <div style="position: relative;" class="fileinput-holder">
-                            @foreach($gimgs as $vi)
-                            <img src="{{$vi->gimg}}" class='imgs' gid="{{$vi->id}}" alt="" style='width:130px;height:80px'>
+                            <img src="{{$res->gimg}}" class='imgs' alt="" style='width:130px;height:80px'>
+                            <input type="file" name='gimg'style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
+                        </div>
+                    </div>
+                </div>
+                    
+                <div class="mws-form-row">
+                    <label class="mws-form-label">商品大图</label>
+                    <div class="mws-form-item">
+                        <div style="position: relative;" class="fileinput-holder">
+                            <img src="{{$res->glarge}}" class='imgs' alt="" style='width:130px;height:80px'>
+                            <input type="file" name='glarge' style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mws-form-row">
+                    <label class="mws-form-label">商品小图</label>
+                    <div class="mws-form-item">
+                        <div style="position: relative;" class="fileinput-holder">
+                            @foreach($photoer as $vs)
+                            <img src="{{$vs->small}}" class='imgs' gid="{{$vs->id}}" alt="" style='width:130px;height:80px'>
                             @endforeach
 
-                            <input type="file" name='gimg[]' multiple  style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
+                            <input type="file" name='small[]' multiple  style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mws-form-row">
+                    <label class="mws-form-label">商品中图</label>
+                    <div class="mws-form-item">
+                        <div style="position: relative;" class="fileinput-holder">
+                            @foreach($gmiddle as $vm)
+                            <img src="{{$vm->middle}}" class='imgs' gid="{{$vm->id}}" alt="" style='width:130px;height:80px'>
+                            @endforeach
+
+                            <input type="file" name='middle[]' multiple  style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
                         </div>
                     </div>
                 </div>
@@ -172,6 +205,37 @@
         })
      })
 
-
+        $(function () {
+        $("#file_upload").change(function () {
+            var imgPath = $("#file_upload").val();
+            if (imgPath == "") {
+                alert("请选择上传图片！");
+                return;
+            }
+            //判断上传文件的后缀名
+            var strExtension = imgPath.substr(imgPath.lastIndexOf('.') + 1);
+            if (strExtension != 'jpg' && strExtension != 'gif'
+                && strExtension != 'png' && strExtension != 'bmp') {
+                alert("请选择图片文件");
+                return;
+            }
+            var formData = new FormData($('#mws')[0]);
+            // var id = $('#id').val();
+            $.ajax({
+                type: "POST",
+                url: "/admin/uploadlinks",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    // console.log(data);
+                    $('#imgs').attr('src',data);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("上传失败，请检查网络后重试");
+                }
+            });
+        })
+    })
 </script>
 @stop

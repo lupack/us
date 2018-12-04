@@ -118,7 +118,27 @@ class AdController extends Controller
 
         return view('admin.ad.edit',['res'=>$res,'title'=>'修改轮播']);
     }
+      public function upload(Request $request)
+    {
+        $file = $request->file('src');
+        $id = $request->id;
+        // dump($id);
+        if($file->isValid()){
+            //上传文件的后缀名
+            $entension = $file->getClientOriginalExtension();
+            //修改名字
+            $newName = date('YmdHis').mt_rand(1000,9999).'.'.$entension;
+            //移动文件
+            $path = $file->move('./uploads',$newName);
 
+            $filepath = '/uploads/'.$newName;
+
+            $res['src'] = $filepath;
+            DB::table('ad')->where('id',$id)->update($res);
+            //返回文件的路径
+            return  $filepath;
+        }
+    }
     /**
      * Update the specified resource in storage.
      *

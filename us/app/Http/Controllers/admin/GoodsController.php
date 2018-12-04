@@ -9,6 +9,8 @@ use App\Model\Admin\Category;
 use App\Model\Admin\Goodstype;
 use App\Model\Admin\Goodsbrand;
 use App\Model\Admin\Goodsimg;
+use App\Model\Admin\Photoer;
+use App\Model\Admin\Gmiddle;
 use DB;
 
 class GoodsController extends Controller
@@ -21,23 +23,10 @@ class GoodsController extends Controller
     public function index(Request $request)
     {
         //
-        $res = Goods::orderBy('id','asc')
-            ->where(function($query) use($request){
-                //检测关键字
-                $gname = $request->input('gname');
-               
-                //如果用户名不为空
-                if(!empty($gname)) {
-                    $query->where('gname','like','%'.$gname.'%');
-                }
-              
-            })
-        ->paginate($request->input('num', 10));
-
+        $res = Goods::all();
         return view('admin.goods.index',[
             'title'=>'商品的列表页',
             'res'=>$res,
-            'request'=>$request
         ]);
     }
 
@@ -57,7 +46,6 @@ class GoodsController extends Controller
 
             $ps = substr_count($v->path,',')-1;
             //拼接  分类名
-            // $v->catname = str_repeat('|--',$ps).$v->catname;
 
             $v->cate_name = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;',$ps).'|--'.$v->cate_name;
         }
@@ -92,33 +80,92 @@ class GoodsController extends Controller
             'content.required'=>'详情不为空',
         ]);
 
-        $res = $request->except('_token','gimg');
-        $rs = Goods::create($res);
-        $id = $rs->id;
-         //模型关联  一对多
+        $res = $request->except('_token','middle','small');
+        // dd($res);
+
         if($request->hasFile('gimg')){
 
-            $file = $request->file('gimg'); //$_FILES
+            //自定义名字
+            $name = rand(111,999).time();
 
-            $arr = [];
-            foreach($file as $k => $v){
+            //获取后缀
+            $suffix = $request->file('gimg')->getClientOriginalExtension();
 
-                $ar = [];
+            $request->file('gimg')->move('./uploads',$name.'.'.$suffix);
 
-                $ar['gid'] = $id;
+            $res['gimg'] = '/uploads/'.$name.'.'.$suffix;
+        }
+
+        if($request->hasFile('glarge')){
+
+            //自定义名字
+            $namel = rand(111,999).time();
+
+            //获取后缀
+            $suffixl = $request->file('glarge')->getClientOriginalExtension();
+
+            $request->file('glarge')->move('./uploads',$namel.'.'.$suffixl);
+
+            $res['glarge'] = '/uploads/'.$namel.'.'.$suffixl;
+
+        }
+
+        $rs = Goods::create($res);
+        // dd($rs);
+        $id = $rs->id;
+         //模型关联  一对多
+        
+        //模型关联  一对多
+        if($request->hasFile('small')){
+
+            $files = $request->file('small'); //$_FILES
+
+            $arrs = [];
+            foreach($files as $ks => $vs){
+
+                $ars = [];
+
+                $ars['gid'] = $id;
 
                 //设置名字
-                $name = rand(1111,9999).time();
+                $names = rand(1111,9999).time();
 
                 //后缀
-                $suffix = $v->getClientOriginalExtension();
+                $suffixs = $vs->getClientOriginalExtension();
 
                 //移动
-                $v->move('./uploads', $name.'.'.$suffix);
+                $vs->move('./uploads', $names.'.'.$suffixs);
 
-                $ar['gimg'] = '/uploads/'.$name.'.'.$suffix;
+                $ars['small'] = '/uploads/'.$names.'.'.$suffixs;
 
-                $arr[] = $ar;
+                $arrs[] = $ars;
+            }
+        }
+
+        //模型关联  一对多
+        if($request->hasFile('middle')){
+
+            $filem = $request->file('middle'); //$_FILES
+
+            $arrm = [];
+            foreach($filem as $km => $vm){
+
+                $arm = [];
+
+                $arm['gid'] = $id;
+
+                //设置名字
+                $namem = rand(1111,9999).time();
+
+                //后缀
+                $suffixm = $vm->getClientOriginalExtension();
+
+                //移动
+                $vm->move('./uploads', $namem.'.'.$suffixm);
+
+                $arm['middle'] = '/uploads/'.$namem.'.'.$suffixm;
+
+                $arrm[] = $arm;
             }
         }
 
@@ -126,9 +173,11 @@ class GoodsController extends Controller
         $data = Goods::find($id);
         try{
 
-            $gs = $data->gis()->createMany($arr);
+            // $gs = $data->gis()->create($res);
+            $sma = $data->small()->createMany($arrs);
+            $mid = $data->middle()->createMany($arrm);
             
-            if($gs){
+            if($sma){
                 return redirect('/admin/goods')->with('success','添加成功');
             }
 
@@ -147,7 +196,8 @@ class GoodsController extends Controller
     public function show($id)
     {
         //
-        $res = Goodsimg::destroy($id);
+        $res = Photoer::destroy($id);
+        $rs = Gmiddle::destroy($id);
 
         if($res){
 
@@ -184,6 +234,8 @@ class GoodsController extends Controller
         $brands = Goodsbrand::all();
 
         $gimgs = Goodsimg::where('gid',$id)->get();
+        $photoer = Photoer::where('gid',$id)->get();
+        $gmiddle = Gmiddle::where('gid',$id)->get();
 
         return view('admin.goods.edit',[
             'title'=>'商品的修改页面',
@@ -191,7 +243,9 @@ class GoodsController extends Controller
             'res'=>$res,
             'gimgs'=>$gimgs,
             'types'=>$types,
-            'brands'=>$brands
+            'brands'=>$brands,
+            'photoer'=>$photoer,
+            'gmiddle'=>$gmiddle
         ]);
     }
 
@@ -216,50 +270,125 @@ class GoodsController extends Controller
         ]);
         //表单验证
 
-        /*$rs = Goodsimg::where('gid',$id)->get();
-
-        foreach($rs as $v){
-
-            unlink('.'.$v->gimg);
-        }*/
-
-        $res = $request->except('_token','_method','gimg');
+        $res = $request->except('_token','_method','gimg','method','small','glarge','middle');
 
         $data = Goods::where('id',$id)->update($res);
 
-        //关联表的信息
         if($request->hasFile('gimg')){
 
-            $file = $request->file('gimg'); //$_FILES
+            // $file = $request->file('gimg'); //$_FILES
+            // dd($file);
+            //自定义名字
+            $name = rand(111,999).time();
 
-            $arr = [];
-            foreach($file as $k => $v){
+            //获取后缀
+            $suffix = $request->file('gimg')->getClientOriginalExtension();
 
-                $ar = [];
+            $request->file('gimg')->move('./uploads',$name.'.'.$suffix);
 
-                $ar['gid'] = $id;
+            $res['gimg'] = '/uploads/'.$name.'.'.$suffix;
 
-                //设置名字
-                $name = rand(1111,9999).time();
-
-                //后缀
-                $suffix = $v->getClientOriginalExtension();
-
-                //移动
-                $v->move('./uploads', $name.'.'.$suffix);
-
-                $ar['gimg'] = '/uploads/'.$name.'.'.$suffix;
-
-                $arr[] = $ar;
-
-                /*$sd = []
-                $sd = ['gid'=>$id,'gimg'=>'/uploads/'.$name.'.'.$suffix];
-                array_push($arr,$sd);*/
-            }
-            $rs = Goodsimg::where('gid',$id)->insert($arr);
         }
 
-        return redirect('/admin/goods')->with('info','修改成功');
+        if($request->hasFile('glarge')){
+
+            // $file = $request->file('glarge'); //$_FILES
+            // dd($file);
+            //自定义名字
+            $namel = rand(111,999).time();
+
+            //获取后缀
+            $suffixl = $request->file('glarge')->getClientOriginalExtension();
+
+            $request->file('glarge')->move('./uploads',$namel.'.'.$suffixl);
+
+            $res['glarge'] = '/uploads/'.$namel.'.'.$suffixl;
+
+        }
+        //模型关联  一对多
+        /*$rsm = Photoer::where('gid',$id)->get();
+
+        foreach($rsm as $val){
+
+            unlink('.'.$val);
+        }*/
+
+        if($request->hasFile('small')){
+
+            $files = $request->file('small'); //$_FILES
+
+            $arrs = [];
+            foreach($files as $ks => $vs){
+
+                $ars = [];
+
+                $ars['gid'] = $id;
+
+                //设置名字
+                $names = rand(1111,9999).time();
+
+                //后缀
+                $suffixs = $vs->getClientOriginalExtension();
+
+                //移动
+                $vs->move('./uploads', $names.'.'.$suffixs);
+
+                $ars['small'] = '/uploads/'.$names.'.'.$suffixs;
+
+                $arrs[] = $ars;
+            }
+            $rs = Photoer::where('gid',$id)->insert($arrs);
+        }
+
+        //模型关联  一对多
+/*        $rsg = Gmiddle::where('gid',$id)->get();
+
+        foreach($rsg as $vg){
+
+            unlink('.'.$vg);
+        }*/
+
+        if($request->hasFile('middle')){
+
+            $filem = $request->file('middle'); //$_FILES
+
+            $arrm = [];
+            foreach($filem as $km => $vm){
+
+                $arm = [];
+
+                $arm['gid'] = $id;
+
+                //设置名字
+                $namem = rand(1111,9999).time();
+
+                //后缀
+                $suffixm = $vm->getClientOriginalExtension();
+
+                //移动
+                $vm->move('./uploads', $namem.'.'.$suffixm);
+
+                $arm['middle'] = '/uploads/'.$namem.'.'.$suffixm;
+
+                $arrm[] = $arm;
+            }
+            $rs = Gmiddle::where('gid',$id)->insert($arrm);
+        }
+
+        try{
+
+            $data = goods::where('id', $id)->update($res);
+
+            if($data){
+                return redirect('/admin/goods')->with('info','修改成功');
+            }else{
+                 return redirect('/admin/goods')->with('info','修改成功');
+            }
+
+        }catch(\Exception $e){
+
+            return back()->with('error','修改失败');
+        }
 
     }
 
@@ -276,7 +405,9 @@ class GoodsController extends Controller
             $goods = Goods::where('id',$id)->first();
             // dd($goods);
             $goods->delete();
-            $goods->gis()->delete();
+            // $goods->gis()->delete();
+            $goods->small()->delete();
+            $goods->middle()->delete();
             
             return redirect('/admin/goods')->with('success','添加成功');
     }

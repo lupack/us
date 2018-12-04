@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Admin\Goods;
-use App\Model\Admin\Goodsimg;
+use App\Model\Admin\Photoer;
 use DB;
 class PhotosController extends Controller
 {
@@ -17,9 +17,8 @@ class PhotosController extends Controller
     public function index()
     {
         //
-
         $goods = Goods::all();
-        $photos = Goodsimg::all();
+        $photos = Photoer::all();
         return view('admin.photos.index',['title'=>'图片管理','goods'=>$goods,'photos'=>$photos]);
     }
 
@@ -64,7 +63,7 @@ class PhotosController extends Controller
     public function edit($id)
     {
         //
-        $res = Goodsimg::find($id);
+        $res = Photoer::find($id);
         // dd($res);
         $goods = Goods::all();
         return view('admin.photos.edit',['title'=>'图片修改界面','goods'=>$goods,'res'=>$res]);
@@ -80,21 +79,21 @@ class PhotosController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $res = $request->except('_token','gimg','_method');
+        $res = $request->except('_token','small','_method');
         //dd($res);
-        if($request->hasFile('gimg')){
+        if($request->hasFile('small')){
             //自定义名字
             $name = rand(111,999).time();
 
 
             //获取后缀
-            $suffix = $request->file('gimg')->getClientOriginalExtension();
+            $suffix = $request->file('small')->getClientOriginalExtension();
 
 
-            $request->file('gimg')->move('./uploads',$name.'.'.$suffix);
+            $request->file('small')->move('./uploads',$name.'.'.$suffix);
 
 
-            $res['gimg'] = '/uploads/'.$name.'.'.$suffix;
+            $res['small'] = '/uploads/'.$name.'.'.$suffix;
         }
 
 
@@ -102,7 +101,7 @@ class PhotosController extends Controller
         try{
 
 
-            $data = Goodsimg::where('id', $id)->update($res);
+            $data = Photoer::where('id', $id)->update($res);
 
 
             if($data){
@@ -123,7 +122,7 @@ class PhotosController extends Controller
     }
     public function upload(Request $request)
     {
-        $file = $request->file('gimg');
+        $file = $request->file('small');
         $id = $request->id;
         // dump($id);
         if($file->isValid()){
@@ -138,8 +137,8 @@ class PhotosController extends Controller
             $filepath = '/uploads/'.$newName;
 
 
-            $res['gimg'] = $filepath;
-            DB::table('goods_photo')->where('id',$id)->update($res);
+            $res['small'] = $filepath;
+            DB::table('photoer')->where('id',$id)->update($res);
             //返回文件的路径
             return  $filepath;
         }

@@ -15,6 +15,8 @@
                     <th>大小</th>
                     <th>单位</th>
                     <th>详情</th>
+                    <th>原图</th>
+                    <th>大图</th>
                     <th>状态</th>
                     <th>操作</th>
                 </tr>
@@ -42,6 +44,8 @@
                             {!!$v->content!!}
                         </th>
                        
+                        <th><img src="{{$v->gimg}}" alt=""></th>
+                        <th><img src="{{$v->glarge}}" alt=""></th>
                         <th class=" ">
                             @if($v->status== 1)
 

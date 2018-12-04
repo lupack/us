@@ -29,8 +29,14 @@ class Goods extends Model
      * @var array
      */
     protected $guarded = [];
-    public function gis()
-    {
-        return $this->hasMany('App\Model\Admin\Goodsimg','gid');
+
+    public function small(){
+
+        return $this->hasMany('App\Model\admin\Photoer','gid');
+    }
+
+    public function middle(){
+
+        return $this->hasMany('App\Model\admin\Gmiddle','gid');
     }
 }

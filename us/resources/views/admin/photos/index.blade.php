@@ -21,16 +21,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($photos as $k=>$v)
+                    @foreach ($photos as $v)
                     <tr>
                         <th>{{$v->id}}</th>
                         
-                        @foreach ($goods as $kt=>$vt)
+                        @foreach ($goods as $vt)
                             @if($vt->id == $v->gid)
                             <th>{{$vt->gname}}</th>
                             @endif
                         @endforeach
-                        <th><img src="{{$v->gimg}}" alt=""></th>
+                        <th><img src="{{$v->small}}" alt=""></th>
                         <th>
                             <span class="btn-group">
                                 <a href="/admin/photos/{{$v['id']}}/edit" class="btn btn-small"><i class="icon-pencil"></i></a>

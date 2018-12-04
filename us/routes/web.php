@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layout.index');
 });
 //后台登录
 
@@ -68,7 +68,7 @@ Route::group(['middleware'=>'login'], function(){
     Route::resource('admin/goodsbrand','Admin\GoodsbrandController');
     //轮播图
     Route::resource('admin/ad','Admin\AdController');
-     //轮播图
+    //友情链接
     Route::resource('admin/links','Admin\LinksController');
 
 
@@ -77,8 +77,24 @@ Route::group(['middleware'=>'login'], function(){
     Route::resource('admin/photos','Admin\PhotosController');
     Route::any('/admin/uploadphotos','Admin\PhotosController@upload');
 
+    Route::resource('admin/gmiddle','Admin\GmiddleController');
+    Route::any('/admin/uploadgmiddle','Admin\GmiddleController@upload');
+
+    //yemiandingtaihua
+    Route::any('/admin/uploadad','Admin\AdController@upload');
+    Route::any('/admin/uploadconf','Admin\ConfController@upload');
+    Route::any('/admin/uploadlinks','Admin\LinksController@upload');
+      //网站配置
+    Route::resource('admin/conf','Admin\ConfController');
+
 });
 
 //用户权限提示页面
     Route::get('/admin/remind','Admin\UserController@remind');
 
+
+//前台
+Route::group([],function(){
+
+    Route::get('home/cart','Home\CartController@cart');
+});

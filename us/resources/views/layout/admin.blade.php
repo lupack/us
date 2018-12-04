@@ -189,7 +189,7 @@
                         <li><a href="/admin/links">链接管理</a></li>
                     </ul>
                 </li>
-
+    
                 <li>
                     <a href="#"><i class="icon-list"></i> 商品管理</a>
                     <ul>
@@ -201,6 +201,13 @@
                     <a href="#"><i class="icon-list"></i> 图片管理</a>
                     <ul>
                         <li><a href="/admin/photos">图片列表</a></li>
+                        <li><a href="/admin/gmiddle">中图列表</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;"><i class="icon-list"></i>网站配置</a>
+                    <ul>
+                        <li><a href="/admin/conf">配置管理</a></li>
                     </ul>
                 </li>
             </ul>

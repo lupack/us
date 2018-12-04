@@ -35,11 +35,11 @@
                  <div class="mws-form-row">
                         <label class="mws-form-label">商品图片</label>
                         <div class="mws-form-item">
-                            <img src="{{$res->gimg}}" id='imgs' alt="上传后显示图片" >
+                            <img src="{{$res->small}}" id='imgs' alt="上传后显示图片" >
                             <div style="position: relative;" class="fileinput-holder">
                                 <input type="hidden" name="id" value="{{$res->id}}">
                                 <meta name="csrf-token" content="{{ csrf_token() }}">
-                                <input id="file_upload" type="file" name='gimg' style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
+                                <input id="file_upload" type="file" name='small' style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
                         </div>
                     </div>
                 </div>

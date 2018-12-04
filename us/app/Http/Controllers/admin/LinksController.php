@@ -102,7 +102,27 @@ class LinksController extends Controller
     {
         //
     }
+     public function upload(Request $request)
+    {
+        $file = $request->file('logo');
+        $id = $request->id;
+        // dump($id);
+        if($file->isValid()){
+            //上传文件的后缀名
+            $entension = $file->getClientOriginalExtension();
+            //修改名字
+            $newName = date('YmdHis').mt_rand(1000,9999).'.'.$entension;
+            //移动文件
+            $path = $file->move('./uploads',$newName);
 
+            $filepath = '/uploads/'.$newName;
+
+            $res['logo'] = $filepath;
+            DB::table('links')->where('id',$id)->update($res);
+            //返回文件的路径
+            return  $filepath;
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      *

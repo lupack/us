@@ -87,14 +87,41 @@
                 </div>
 
                 <div class="mws-form-row">
-                    <label class="mws-form-label">商品图片</label>
+                    <label class="mws-form-label">商品原图</label>
                     <div class="mws-form-item">
                         <div style="position: relative;" class="fileinput-holder">
-                            <input type="file" name='gimg[]' multiple  style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
+                            <input type="file" name='gimg' style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mws-form-row">
+                    <label class="mws-form-label">商品大图</label>
+                    <div class="mws-form-item">
+                        <div style="position: relative;" class="fileinput-holder">
+                            <input type="file" name='glarge' style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mws-form-row">
+                    <label class="mws-form-label">商品小图</label>
+                    <div class="mws-form-item">
+                        <div style="position: relative;" class="fileinput-holder">
+                            <input type="file" name='small[]' multiple  style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
                         </div>
                     </div>
                 </div>
                 
+                <div class="mws-form-row">
+                    <label class="mws-form-label">商品中图</label>
+                    <div class="mws-form-item">
+                        <div style="position: relative;" class="fileinput-holder">
+                            <input type="file" name='middle[]' multiple  style="position: absolute; top: 0px; right: 0px; margin: 0px; cursor: pointer; font-size: 999px; opacity: 0; z-index: 999;">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mws-form-row">
                     <label class="mws-form-label">状态</label>
                     <div class="mws-form-item clearfix">
