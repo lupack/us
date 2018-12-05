@@ -98,3 +98,6 @@ Route::group([],function(){
 
     Route::get('home/cart','Home\CartController@cart');
 });
+
+
+
