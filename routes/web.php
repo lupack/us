@@ -70,10 +70,11 @@ Route::group(['middleware'=>['login','userper']], function(){
     Route::resource('admin/links','Admin\LinksController');
 
 
-    //商品管理
+    /*//商品管理
     Route::resource('admin/goods','Admin\GoodsController');
     Route::resource('admin/photos','Admin\PhotosController');
     Route::any('/admin/uploadphotos','Admin\PhotosController@upload');
+
     Route::resource('admin/gmiddle','Admin\GmiddleController');
     Route::any('/admin/uploadgmiddle','Admin\GmiddleController@upload');
 
@@ -85,10 +86,11 @@ Route::group(['middleware'=>['login','userper']], function(){
     Route::resource('admin/conf','Admin\ConfController');
 
     //前台用户管理
-    Route::resource('admin/users','Admin\UsersController');
+    Route::resource('admin/users','Admin\UsersController');*/
 
 
 });
+
 //商品管理
     Route::resource('admin/goods','Admin\GoodsController');
     Route::resource('admin/photos','Admin\PhotosController');
@@ -103,47 +105,49 @@ Route::group(['middleware'=>['login','userper']], function(){
     Route::any('/admin/uploadlinks','Admin\LinksController@upload');
       //网站配置
     Route::resource('admin/conf','Admin\ConfController');
+
 //用户权限提示页面
     Route::get('/admin/remind','Admin\UserController@remind');
 
 
-//前台luyou
+//前台
 Route::group([],function(){
 
     Route::get('/', 'Home\IndexController@index');
-    // Route::get('home/xq','Home\XqController@xq');
-    // 查询显示
-    Route::get('home/list','Home\IndexController@sous');
-    //详情页
-    Route::get('home/xq/{id}','Home\XqController@xq');
-    Route::get('home/cate','Home\XqController@store');
+    //Route::get('/index', 'Home\IndexController@index');
+    Route::get('home/xq','Home\XqController@xq');
 
 });
-     //前台用户注册
-    Route::get('home/register','Home\RegisterController@register');
-    Route::post('home/checkmail','Home\RegisterController@checkmail');
-    Route::get('home/success','Home\RegisterController@success');
-    //前台用户登录
-    Route::any('home/login','Home\LoginController@login');
-    Route::any('home/dologin','Home\LoginController@dologin');
-    Route::get('home/forget','Home\LoginController@forget');
-    Route::get('home/out','Home\LoginController@out');
-    //忘记密码
 
-    Route::post('home/doforget','Home\LoginController@doforget');
-    Route::post('home/checkphone','Home\LoginController@checkphone');
-    Route::get('home/checkcode','Home\LoginController@checkcode');
-    Route::any('home/fgpass','Home\PassController@fgpass');
-    Route::any('home/xapass','Home\PassController@xpass');
-    //Route::get('/index', 'Home\IndexController@index');
-    //购物车
-    Route::any('/home/cart/index', 'Home\CartController@index');
-    Route::any('/home/cart/create', 'Home\CartController@create');
-    Route::get('home/cart', 'Home\CartController@sh');
-    Route::get('home/cartadd', 'Home\CartController@shadd');
+
+//前台用户注册
+
+Route::get('home/register','Home\RegisterController@register');
+Route::post('home/checkmail','Home\RegisterController@checkmail');
+Route::get('home/success','Home\RegisterController@success');
+Route::post('/home/checkuser','Home\RegisterController@checkuser');
+
+//前台用户登录
+
+Route::any('home/login','Home\LoginController@login');
+Route::any('home/dologin','Home\LoginController@dologin');
+Route::get('home/forget','Home\LoginController@forget');
+Route::get('home/out','Home\LoginController@out');
+
+
+//忘记密码
+
+Route::post('home/doforget','Home\LoginController@doforget');
+Route::post('home/checkphone','Home\LoginController@checkphone');
+Route::get('home/checkcode','Home\LoginController@checkcode');
+Route::any('home/fgpass','Home\PassController@fgpass');
+Route::any('home/xapass','Home\PassController@xpass');
+
+
+Route::get('/qqlogin','TestController@qqlogin');
+Route::get('/qq','TestController@qq');
 
 //个人中心
-
 
 Route::any('/home/person','Home\PersonalController@index');
 Route::any('/home/zhanghu','Home\PersonalController@zhanghu');
@@ -158,14 +162,5 @@ Route::any('/home/dingdan','Home\PersonalController@dingdan');
 
 //绑定手机
 
-
 Route::any('/home/phone','Home\PhoneController@index');
 Route::any('/home/dophone','Home\PhoneController@dophone');
-    //qiantai footer
-   Route::get('/notice/article/{id}','Home\NoticeController@index');
-    //前台导航nav
-    Route::get('/home/goodstype/{id}','Home\GoodstypeController@index');
-    //前台大分类 father
-    Route::get('/home/goodsfather/{id}','Home\GoodstypeController@father');
-    //前台大分类 son
-    Route::get('/home/goodsson/{id}','Home\GoodstypeController@son');
